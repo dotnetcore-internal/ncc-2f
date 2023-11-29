@@ -1,0 +1,33 @@
+{
+  "_page": {
+    "current": 1,
+    "total": 1,
+    "name": "2023",
+    "nameSeries": [
+      "2023"
+    ]
+  },
+  "list": [
+    {
+      "id": "welcome-to-ncc-2f",
+      "title": "Episode 1：歡迎來到 NCC 二層樓",
+      "description": "本期，我們將介紹 NCC 社區的過去與現在，並對未來進行展望；同時，還將與您分享學習 .NET 的一些路徑",
+      "date": "2023-12-09",
+      "author": [
+        {
+          "id": "alexinea",
+          "name": "Alex LEWIS",
+          "url": "https://github.com/alexinea",
+          "avatar": "/images/people/alexinea.png"
+        },
+        {
+          "id": "lhy",
+          "name": "Haoyang LIU",
+          "url": "https://github.com/liuhaoyang",
+          "avatar": "/images/people/lhy.jpg"
+        }
+      ],
+      "img": "ncc-2f.png"
+    }
+  ]
+}

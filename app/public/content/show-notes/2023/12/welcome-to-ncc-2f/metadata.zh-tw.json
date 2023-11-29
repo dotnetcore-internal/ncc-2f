@@ -1,0 +1,20 @@
+{
+  "id": "welcome-to-ncc-2f",
+  "title": "Episode 1：歡迎來到 NCC 二層樓",
+  "date": "2023-12-09",
+  "author": [
+    {
+      "id": "alexinea",
+      "name": "Alex LEWIS",
+      "url": "https://github.com/alexinea",
+      "avatar": "/images/people/alexinea.png"
+    },
+    {
+      "id": "lhy",
+      "name": "Haoyang LIU",
+      "url": "https://github.com/liuhaoyang",
+      "avatar": "/images/people/lhy.jpg"
+    }
+  ],
+  "img": "ncc-2f.png"
+}

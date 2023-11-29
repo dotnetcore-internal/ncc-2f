@@ -63,7 +63,7 @@ const switchMobileMenu = () => {
               <img :src="useLogoUrl" width="180" alt="NCC"/>
             </a>
             <div class="sub-title-tip">
-              #Contribute!
+              二層樓
             </div>
           </div>
           <div class="ml-5 inline-block">
@@ -95,7 +95,7 @@ const switchMobileMenu = () => {
               <img :src="useLogoUrl" width="140" alt="NCC"/>
             </a>
             <div class="sub-title-tip-2">
-              #C!
+              #2F!
             </div>
           </div>
         </template>
@@ -145,15 +145,15 @@ const switchMobileMenu = () => {
 }
 
 .sub-title-tip {
-  @apply absolute bg-yellow-300/30 px-1.5 -right-3 top-6;
-  @apply border border-yellow-600 rounded-3xl rounded-bl-none;
-  @apply text-xs text-yellow-600 font-black italic;
+  @apply absolute bg-purple-300/30 px-1.5 right-0 top-6;
+  @apply border border-purple-600 rounded-3xl rounded-bl-none;
+  @apply text-xs text-purple-600 font-black italic;
 }
 
 .sub-title-tip-2{
-  @apply absolute bg-yellow-300/30 px-1.5 right-0 top-4;
-  @apply border border-yellow-600 rounded-3xl rounded-bl-none;
-  @apply text-xs text-yellow-600 font-black italic;
+  @apply absolute bg-purple-300/30 px-1.5 right-0 top-4;
+  @apply border border-purple-600 rounded-3xl rounded-bl-none;
+  @apply text-xs text-purple-600 font-black italic;
 }
 
 #mobile-menu {

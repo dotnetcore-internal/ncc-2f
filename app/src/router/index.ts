@@ -7,19 +7,35 @@ const baseRoutes: RouteRecordRaw[] = [
         component: () => import("../views/HomeView.vue")
     },
     {
-        path:"/about",
-        name:"about",
+        path: "/about",
+        name: "about",
         component: () => import("../views/AboutView.vue")
     },
     {
-        path:"/speakers",
-        name:"speakers",
+        path: "/speakers",
+        name: "speakers",
         component: () => import("../views/AllSpeakers.vue")
     },
     {
-        path:"/how-to",
-        name:"how-to",
+        path: "/how-to",
+        name: "how-to",
         component: () => import("../views/HowTo.vue")
+    },
+    {
+        path: "/pages/:pageNum",
+        name: "home-page",
+        component: () => import("../views/HomeView.vue")
+    },
+    {
+        path: "/show-notes",
+        name: "show-notes",
+        component: () => import("../views/HomeView.vue")
+    },
+
+    {
+        path: "/show-notes/:pathMatch(.*)*",
+        name: "show-notes-detail",
+        component: () => import("../views/ShowNotesView.vue")
     },
     {
         path: "/:pathMatch(.*)*",

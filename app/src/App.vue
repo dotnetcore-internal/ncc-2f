@@ -49,11 +49,11 @@ const isCurrentPage = (name: string) => {
           <anchor href="/"
                   route-name="home"
                   class="block text-center text-2xl font-black my-4">
-            二層樓
+            {{ $t('2f.name') }}
           </anchor>
 
           <div class="text-slate-600 text-center lg:text-left font-light lg:w-48 mx-auto">
-            聊聊技术、程序员和 .NET……除了技术，我们还应有社交与生活。
+            {{ $t('2f.desc') }}
           </div>
 
           <div class="text-center lg:text-left lg:w-48 mx-auto mt-8 text-sm">
@@ -64,7 +64,7 @@ const isCurrentPage = (name: string) => {
                       'font-bold': isCurrentPage('home')
                     }"
                     class="lg:block m-2 leading-7">
-              首页
+              {{ $t('home') }}
             </anchor>
             <anchor href="/about"
                     route-name="about"
@@ -72,7 +72,7 @@ const isCurrentPage = (name: string) => {
                       'font-bold': isCurrentPage('about')
                     }"
                     class="lg:block m-2 leading-7">
-              关于
+              {{ $t('about') }}
             </anchor>
             <anchor href="/speakers"
                     route-name="speakers"
@@ -80,7 +80,7 @@ const isCurrentPage = (name: string) => {
                       'font-bold': isCurrentPage('speakers')
                     }"
                     class="lg:block m-2 leading-7">
-              嘉宾们
+              {{ $t('2f.guests') }}
             </anchor>
             <anchor href="/how-to"
                     route-name="how-to"
@@ -88,7 +88,7 @@ const isCurrentPage = (name: string) => {
                       'font-bold': isCurrentPage('how-to')
                     }"
                     class="lg:block m-2 leading-7">
-              参与二层楼？
+              {{ $t('2f.how-to') }}
             </anchor>
           </div>
 

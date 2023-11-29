@@ -1,9 +1,17 @@
 <script setup lang="ts">
 
+import MarkdownWorker from "@/components/markdown/MarkdownWorker.vue";
 </script>
 
 <template>
-关于我们
+
+  <markdown-worker source="pages/about-2f"
+                   :i18n="true"
+                   fallback-locale="en"
+                   :include-file-extension="true"
+                   file-extension=".md"
+                   :redirect-to404="false" />
+
 </template>
 
 <style scoped lang="css">

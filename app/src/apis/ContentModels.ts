@@ -15,6 +15,8 @@ export interface hasDescription {
 }
 
 export interface EpisodeIndexModel extends Article, hasAuthor, hasDescription {
+    bvid?: string;
+    yid?: string;
 }
 
 export interface StoryIndexModel extends Article, hasAuthor, hasDescription {

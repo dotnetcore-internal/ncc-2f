@@ -1,25 +1,24 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, reactive } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { useUiStore } from "@/stores/uiStore";
-import { useEmitter } from "@/hooks/useEmitter";
-import { setTitle } from "@/hooks/usePageToolkits";
-import { queryPagedEpisode } from "@/apis/QueryPagedEpisodeApi";
-import type { EpisodeIndexModel, PageDescriptor } from "@/apis/ContentModels";
+import {computed, onMounted, onUnmounted, reactive} from "vue";
+import {useRoute, useRouter} from "vue-router";
+import {useUiStore} from "@/stores/uiStore";
+import {useEmitter} from "@/hooks/useEmitter";
+import {setTitle} from "@/hooks/usePageToolkits";
+import {queryPagedEpisode} from "@/apis/QueryPagedEpisodeApi";
+import type {EpisodeIndexModel, PageDescriptor} from "@/apis/ContentModels";
 
 import BodyBlock from "@/components/blocks/BodyBlock.vue";
-import TitleBlock from "@/components/blocks/TitleBlock.vue";
 import ArticleCards from "@/components/articles/ArticleCards.vue";
 import ArticleNav from "@/components/articles/ArticleNav.vue";
 
-setTitle("home",'i18n');
+setTitle("home", 'i18n');
 
 const route = useRoute();
 const router = useRouter();
 const uiStore = useUiStore();
 const emitter = useEmitter();
 const list = reactive<EpisodeIndexModel[]>([]);
-const page = reactive<PageDescriptor>({ current: 1, total: 1 , name: "", nameSeries: [] });
+const page = reactive<PageDescriptor>({current: 1, total: 1, name: "", nameSeries: []});
 
 const updatePage = (models: EpisodeIndexModel[], pageModel: PageDescriptor) => {
   list.length = 0;
@@ -78,7 +77,7 @@ const loadPageEpisodeAsync = async (queryPageNumber: number, locale?: string) =>
         updatePage(data.list, data._page);
       }),
       () => {
-        router.push({ path: "/404" });
+        router.push({path: "/404"});
       }
   );
 };
@@ -131,32 +130,33 @@ onUnmounted(() => {
                  base-url="/show-notes"
     />
 
-      <article-cards :articles="list"
-                     default-display-mode="card"
-                     :display-description="true"
-                     base-url="/show-notes"
-                     display-author-mode="all-but-avatar"
-                     :display-author-by="false"
-                     :display-conjunctions="false"
-                     :enable-block-mode="false"
-                     :enable-pure-block-mode="false"
-                     :enable-grid-mode="false"
-                     :enable-card-mode="true"
-                     :open-in-new-tab="false"
-                     image-style="width: 6rem; margin: 1.5rem 0;"
-                     :with-shadow="false"
-      />
-
-      <article-nav v-if="moreThanOnePage"
-                   :descriptor="page"
-                   :previous="async ()=>await loadPreviousPageAsync()"
-                   :next="async ()=>await loadNextPageAsync()"
-                   :first="async ()=>await loadPageEpisodeAsync(1)"
-                   :last="async ()=>await loadPageEpisodeAsync(page.total)"
-                   :go="async (pageNumber)=>await loadPageEpisodeAsync(pageNumber)"
-                   :hidden-if-btn-disabled="true"
+    <article-cards :articles="list"
+                   default-display-mode="card"
+                   :display-description="true"
                    base-url="/show-notes"
-      />
+                   display-author-mode="all-but-avatar"
+                   :display-author-by="false"
+                   :display-conjunctions="false"
+                   :use-author-extend-strategy="[{key:'speaker', mode:'i18n'},{key: 'host', mode:'i18n'}]"
+                   :enable-block-mode="false"
+                   :enable-pure-block-mode="false"
+                   :enable-grid-mode="false"
+                   :enable-card-mode="true"
+                   :open-in-new-tab="false"
+                   image-style="width: 6rem; margin: 1.5rem 0;"
+                   :with-shadow="false"
+    />
+
+    <article-nav v-if="moreThanOnePage"
+                 :descriptor="page"
+                 :previous="async ()=>await loadPreviousPageAsync()"
+                 :next="async ()=>await loadNextPageAsync()"
+                 :first="async ()=>await loadPageEpisodeAsync(1)"
+                 :last="async ()=>await loadPageEpisodeAsync(page.total)"
+                 :go="async (pageNumber)=>await loadPageEpisodeAsync(pageNumber)"
+                 :hidden-if-btn-disabled="true"
+                 base-url="/show-notes"
+    />
 
   </body-block>
 </template>

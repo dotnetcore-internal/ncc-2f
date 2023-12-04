@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<{
   displayAuthorMode?: "hide" | "all" | "all-but-avatar" | "all-but-name" | "all-but-first-avatar" | "all-but-first-name" | "first" | "first-but-avatar" | "first-but-name"
   displayAuthorBy?: boolean;
   displayConjunctions?: boolean;
+  useAuthorExtendStrategy?: { key: string; mode?: 'direct' | 'i18n'; displayText?: string }[];
   displayDescription?: boolean;
   displayDate?: boolean;
   enableCardMode?: boolean;
@@ -145,6 +146,7 @@ const useIconTheme = (mode: "grid" | "list" | "card" | "block" | "pure-block") =
                       :display-author-mode="displayAuthorMode"
                       :display-author-by="displayAuthorBy"
                       :display-conjunctions="displayConjunctions"
+                      :use-author-extend-strategy="useAuthorExtendStrategy"
                       :display-date="displayDate"
                       :with-shadow="withShadow"
                       :open-in-new-tab="openInNewTab"
@@ -177,6 +179,7 @@ const useIconTheme = (mode: "grid" | "list" | "card" | "block" | "pure-block") =
                            :display-author-mode="displayAuthorMode"
                            :display-author-by="displayAuthorBy"
                            :display-conjunctions="displayConjunctions"
+                           :use-author-extend-strategy="useAuthorExtendStrategy"
                            :display-date="displayDate"
                            :with-shadow="withShadow"
                            :open-in-new-tab="openInNewTab"
@@ -213,6 +216,7 @@ const useIconTheme = (mode: "grid" | "list" | "card" | "block" | "pure-block") =
                      :display-author-mode="displayAuthorMode"
                      :display-author-by="displayAuthorBy"
                      :display-conjunctions="displayConjunctions"
+                     :use-author-extend-strategy="useAuthorExtendStrategy"
                      :display-date="displayDate"
                      :with-shadow="withShadow"
                      :with-scale="withScale"
@@ -248,6 +252,7 @@ const useIconTheme = (mode: "grid" | "list" | "card" | "block" | "pure-block") =
                      :display-author-mode="displayAuthorMode"
                      :display-author-by="displayAuthorBy"
                      :display-conjunctions="displayConjunctions"
+                     :use-author-extend-strategy="useAuthorExtendStrategy"
                      :display-date="displayDate"
                      :with-shadow="withShadow"
                      :open-in-new-tab="openInNewTab"
@@ -280,6 +285,7 @@ const useIconTheme = (mode: "grid" | "list" | "card" | "block" | "pure-block") =
                      :display-author-mode="displayAuthorMode"
                      :display-author-by="displayAuthorBy"
                      :display-conjunctions="displayConjunctions"
+                     :use-author-extend-strategy="useAuthorExtendStrategy"
                      :display-date="displayDate"
                      :open-in-new-tab="openInNewTab"
     >

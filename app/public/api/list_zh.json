@@ -18,13 +18,20 @@
           "id": "alexinea",
           "name": "Alex LEWIS",
           "url": "https://github.com/alexinea",
-          "avatar": "/images/people/alexinea.png"
+          "avatar": "/images/people/alexinea.png",
+          "groups": [
+            "host",
+            "speaker"
+          ]
         },
         {
           "id": "lhy",
           "name": "Haoyang LIU",
           "url": "https://github.com/liuhaoyang",
-          "avatar": "/images/people/lhy.jpg"
+          "avatar": "/images/people/lhy.jpg",
+          "groups": [
+            "speaker"
+          ]
         }
       ],
       "img": "ncc-2f.png"

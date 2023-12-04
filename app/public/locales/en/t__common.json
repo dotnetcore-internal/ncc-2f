@@ -132,8 +132,11 @@
     "name": "Second Floor",
     "desc": "Let's talk about technology, programmers, and .NET... Besides technology, we should also have social interactions and a life outside of it.",
     "guests": "Guests",
-    "how-to": "How to get involved"
+    "how-to": "How to get involved",
+    "producers-of-this-episode": "Producers of this episode: "
   },
+  "speaker": "Guest Speaker",
+  "host": "Host",
   "page": {
     "first": "First",
     "last": "Last",

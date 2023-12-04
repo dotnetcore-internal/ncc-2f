@@ -132,8 +132,11 @@
     "name": "二层楼",
     "desc": "聊聊技术、程序员和 .NET……除了技术，我们还应有社交与生活。",
     "guests": "嘉宾们",
-    "how-to": "参与二层楼？"
+    "how-to": "参与二层楼？",
+    "producers-of-this-episode": "本期制作人员："
   },
+  "speaker": "演讲嘉宾",
+  "host": "主持人",
   "page": {
     "first": "首页",
     "last": "末页",

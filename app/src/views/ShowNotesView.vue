@@ -14,6 +14,7 @@ import TitleBlock from "@/components/blocks/TitleBlock.vue";
 import Anchor from "@/components/basic/AnchorElement.vue";
 import ArticleAuthors from "@/components/articles/ArticleAuthors.vue";
 import {ArrowLeft} from "@icon-park/vue-next";
+import ArticleCardsAuthors from "@/components/articles/ArticleCardsAuthors.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -56,8 +57,6 @@ const useArticleDate = computed(() => {
 });
 
 const useAuthor = computed(() => {
-  console.log(articleMetadata);
-  console.log(articleMetadata.author);
   return articleMetadata.author;
 });
 
@@ -126,6 +125,16 @@ onUnmounted(() => {
                 :final-fallback-fn="()=>router.push({ path: `/404` })"
       />
 
+      <div class="makers">
+        <p class="font-bold"> {{ $t('2f.producers-of-this-episode') }} </p>
+        <article-cards-authors :author="useAuthor"
+                               :display-author-mode="'all-but-avatar'"
+                               :display-author-by="false"
+                               :display-conjunctions="false"
+                               :use-extend-strategy="[{key:'speaker', mode:'i18n'},{key: 'host', mode:'i18n'}]"
+        />
+      </div>
+
     </div>
 
   </body-block>
@@ -133,5 +142,11 @@ onUnmounted(() => {
 </template>
 
 <style scoped lang="css">
+.makers{
+  @apply p-5 text-lg;
 
+  :deep(.group-key){
+    @apply text-lg;
+  }
+}
 </style>

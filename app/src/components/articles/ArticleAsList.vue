@@ -2,7 +2,7 @@
 import {computed} from "vue";
 import {useDateFormat} from "@vueuse/core";
 import {useUiStore} from "@/stores/uiStore";
-import {type AuthorExtendModel, type AuthorModel} from "@/apis/ContentModels";
+import type {AuthorExtendModel, AuthorModel} from "@/apis/ContentModels";
 
 import Anchor from "@/components/basic/AnchorElement.vue";
 import ArticleCardsAuthors from "@/components/articles/ArticleCardsAuthors.vue";
@@ -18,6 +18,7 @@ const props = withDefaults(defineProps<{
   displayAuthorMode?: "hide" | "all" | "all-but-avatar" | "all-but-name" | "all-but-first-avatar" | "all-but-first-name" | "first" | "first-but-avatar" | "first-but-name"
   displayAuthorBy?: boolean;
   displayConjunctions?: boolean;
+  useAuthorExtendStrategy?: { key: string; mode?: 'direct' | 'i18n'; displayText?: string }[];
   displayDescription?: boolean;
   displayDate?: boolean;
   openInNewTab?: boolean;
@@ -74,6 +75,7 @@ const useTarget = computed(() => {
                 :display-author-mode="props.displayAuthorMode"
                 :display-author-by="props.displayAuthorBy"
                 :display-conjunctions="props.displayConjunctions"
+                :use-extend-strategy="props.useAuthorExtendStrategy"
             />
             <!-- Author -->
           </span>

@@ -3,18 +3,12 @@ import {computed, onMounted, onUnmounted, ref, watch} from "vue";
 import {useElementSize} from "@vueuse/core";
 import {useEmitter} from "@/hooks/useEmitter";
 import {useUiStore} from "@/stores/uiStore";
-import {av2cid, bv2av} from "@/utils/bilibiliUtils";
 
 const uiStore = useUiStore();
 const emitter = useEmitter();
 
 const props = withDefaults(defineProps<{
-  bvid: string;
-  page?: number;
-  autoplay?: boolean;
-  isWide?: boolean;
-  highQuality?: boolean;
-  hasDanmaku?: boolean;
+  yid: string;
   aspectWidth?: number;
   aspectHeight?: number;
   width?: string | number;
@@ -22,11 +16,6 @@ const props = withDefaults(defineProps<{
   iframeClass?: string;
   timestamp?: number;
 }>(), {
-  page: 1,
-  isWide: true,
-  autoplay: false,
-  highQuality: true,
-  hasDanmaku: false,
   width: 480,
   iframeClass: '',
   timestamp: 0,
@@ -47,17 +36,9 @@ const timestamp = ref<number>(0);
 const currentAspectWidth = ref(0);
 const currentAspectHeight = ref(0);
 const currentHeight = ref<number | string | undefined>();
-const currentAutoPlay = ref(false);
-
-const aid = ref(0);
-const cid = ref(0);
 
 const useTimeStamp = computed(() => {
-  return timestamp.value;
-});
-
-const useCid = computed(() => {
-  return cid.value;
+  return `?start=${timestamp.value}`;
 });
 
 const calcHeight = (width: number) => {
@@ -80,43 +61,21 @@ const useHeight = computed(() => {
   return 360;
 });
 
-const useHighQuality = computed(() => {
-  return props.highQuality ? 1 : 0;
-});
-
-const useWide = computed(() => {
-  return props.isWide ? 1 : 0;
-});
-
-const useAutoPlay = computed(() => {
-  return currentAutoPlay.value ? 1 : 0;
-});
-
-const useDanmaku = computed(() => {
-  return props.hasDanmaku ? 1 : 0;
-});
-
 const useIframeSrc = computed(() => {
-  const base = '//player.bilibili.com/player.html'
-  return `${base}?aid=${aid.value}&bvid=${props.bvid}&page=${props.page}&cid=${useCid.value}&high_quality=${useHighQuality.value}&as_wide=${useWide.value}&danmaku=${useDanmaku.value}&t=${useTimeStamp.value}&autoplay=${useAutoPlay.value}`
+  const base = 'https://www.youtube.com/embed'
+  return `${base}/${props.yid}${useTimeStamp.value}`
 });
 
 onMounted(async () => {
-
-  aid.value = bv2av(props.bvid);
-  cid.value = av2cid(aid.value);
-
   timestamp.value = props.timestamp;
   currentAspectHeight.value = props.aspectHeight ?? uiStore.isMobileMode ? 9 : 3;
   currentAspectWidth.value = props.aspectWidth ?? uiStore.isMobileMode ? 16 : 4;
   currentHeight.value = props.height;
-  currentAutoPlay.value = props.autoplay;
 
   emitter.on('updateTimeStamp', (e) => {
     const event = e as { timestamp: number, to: 'bilibili' | 'youtube' };
-    if (event.to === 'bilibili') {
+    if (event.to === 'youtube') {
       timestamp.value = event.timestamp;
-      currentAutoPlay.value = true;
     }
   });
 });
@@ -134,7 +93,6 @@ onUnmounted(() => {
         :width="width"
         :height="useHeight"
         :src="useIframeSrc"
-        data-rocket-lazyload="fitvidscompatible"
         :data-lazy-src="useIframeSrc"
         :allowFullScreen="true"
         :class="{ iframeClass }"
@@ -143,7 +101,7 @@ onUnmounted(() => {
         frameborder="0"
         framespacing="0"
         data-ll-status="loaded"
-        sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
     />
   </div>
 </template>

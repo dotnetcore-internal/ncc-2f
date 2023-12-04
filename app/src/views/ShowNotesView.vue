@@ -15,6 +15,8 @@ import TitleBlock from "@/components/blocks/TitleBlock.vue";
 import ArticleAuthors from "@/components/articles/ArticleAuthors.vue";
 import ArticleCardsAuthors from "@/components/articles/ArticleCardsAuthors.vue";
 import Bilibili from "@/components/media/BilibiliEmbedBlock.vue";
+import Youtube from "@/components/media/YoutubeEmbedBlock.vue";
+
 import {ArrowLeft} from "@icon-park/vue-next";
 
 const route = useRoute();
@@ -120,12 +122,13 @@ onUnmounted(() => {
 
     <!-- Start Bilibili Resource -->
     <div class="w-full my-6 rounded-lg overflow-hidden shadow" v-if="articleMetadataLoaded && hasBilibiliBvId">
-      <bilibili :bvid="useBilibiliBvId" width=""/>
+      <bilibili :bvid="useBilibiliBvId" />
     </div>
     <!-- End Bilibili Resource -->
 
     <!-- Start Youtube Resource -->
     <div class="w-full my-6 rounded-lg overflow-hidden shadow" v-if="articleMetadataLoaded && hasYoutubeId">
+      <youtube :yid="useYoutubeId" />
     </div>
     <!-- End Youtube Resource -->
 

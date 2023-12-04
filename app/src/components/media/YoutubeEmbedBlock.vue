@@ -62,8 +62,22 @@ const useHeight = computed(() => {
 });
 
 const useIframeSrc = computed(() => {
-  const base = 'https://www.youtube.com/embed'
-  return `${base}/${props.yid}${useTimeStamp.value}`
+  return `https://www.youtube.com/embed/${props.yid}`
+});
+
+const useIframeSrcWithTs = computed(() => {
+  return `${useIframeSrc.value}${useTimeStamp.value}`
+});
+
+const useSrcWithTs = ref(true);
+const usePausedStatus = ref(false);
+
+const useIframeUrl = computed(() => {
+  return usePausedStatus.value
+      ? ''
+      : useSrcWithTs.value
+          ? useIframeSrcWithTs.value
+          : useIframeSrc.value;
 });
 
 onMounted(async () => {
@@ -76,12 +90,28 @@ onMounted(async () => {
     const event = e as { timestamp: number, to: 'bilibili' | 'youtube' };
     if (event.to === 'youtube') {
       timestamp.value = event.timestamp;
+      // 使用有时间戳版本
+      useSrcWithTs.value = true;
+    }
+  });
+
+  emitter.on('pauseYoutubePlay', (e) => {
+    const event = e as { status: boolean };
+    if (event.status) {
+      //切换，手工暂停
+      usePausedStatus.value = true;
+    } else {
+      // 切换，开始播放
+      usePausedStatus.value = false;
+      // 使用无时间戳版本
+      useSrcWithTs.value = false;
     }
   });
 });
 
 onUnmounted(() => {
   emitter.off('updateTimeStamp');
+  emitter.off('pauseYoutubePlay')
 });
 
 </script>
@@ -89,11 +119,12 @@ onUnmounted(() => {
 <template>
   <div class="w-full" ref="mediaRef">
     <iframe
+        id="youtube-iframe"
         loading="lazy"
         :width="width"
         :height="useHeight"
-        :src="useIframeSrc"
-        :data-lazy-src="useIframeSrc"
+        :src="useIframeUrl"
+        :data-lazy-src="useIframeUrl"
         :allowFullScreen="true"
         :class="{ iframeClass }"
         scrolling="no"

@@ -1,0 +1,193 @@
+<script setup lang="ts">
+import {computed, onMounted, onUnmounted, ref} from "vue";
+import {useEmitter} from "@/hooks/useEmitter";
+import {useUiStore} from "@/stores/uiStore";
+import type {EpisodeIndexModel} from "@/apis/ContentModels";
+import {jumpTimeStamp} from "@/hooks/useMedia";
+
+import YoutubeEmbed from "@/components/media/YoutubeEmbedBlock.vue";
+import BilibiliEmbed from "@/components/media/BilibiliEmbedBlock.vue";
+
+import {Youtobe} from "@icon-park/vue-next";
+import {usePreferredDark} from "@vueuse/core";
+
+const emitter = useEmitter();
+const uiStore = useUiStore();
+
+const props = withDefaults(defineProps<{
+  metadata: EpisodeIndexModel
+}>(), {});
+
+//region Current
+
+const changedMediaManually = ref(false);
+
+//endregion
+
+//region Bilibili params
+const bvid = ref(props.metadata.bvid);
+
+const hasBvId = computed(() => {
+  return !!bvid.value && bvid.value.length > 0;
+});
+
+const useBvId = computed(() => {
+  return bvid.value;
+});
+//endregion
+
+//region Youtube params
+const yid = ref(props.metadata.yid);
+
+const hasYid = computed(() => {
+  return !!yid.value && yid.value.length > 0;
+});
+
+const useYid = computed(() => {
+  return yid.value;
+});
+//endregion
+
+//region Switch & Control
+
+const changeMedia = (media: 'bilibili' | 'youtube', m: boolean = false) => {
+  uiStore.setCurrentMedia(media);
+  changedMediaManually.value = m;
+  if (media === 'bilibili') {
+    emitter.emit('pauseBiliPlay', {status: false});
+    emitter.emit('pauseYoutubePlay', {status: true});
+  } else {
+    emitter.emit('pauseBiliPlay', {status: true});
+    emitter.emit('pauseYoutubePlay', {status: false});
+  }
+}
+
+const changeMediaTimestamp = (second: string | number) => {
+  //跨组件切换时间戳，此处 currentMedia 需要放进 Pinia
+  if (uiStore.currentMedia !== 'none') {
+    jumpTimeStamp(second, uiStore.currentMedia);
+  }
+}
+
+const init = () => {
+
+  if (changedMediaManually.value) {
+    return;
+  }
+
+  const b = hasBvId.value;
+  const y = hasYid.value;
+
+  if (!b && !y) {
+    uiStore.setCurrentMedia('none');
+    return;
+  }
+
+  if (b && !y) {
+    uiStore.setCurrentMedia('bilibili');
+    return;
+  }
+
+  if (y && !b) {
+    uiStore.setCurrentMedia('youtube');
+    return;
+  }
+
+  if (uiStore.locale === 'zh') {
+    uiStore.setCurrentMedia('bilibili');
+  } else {
+    uiStore.setCurrentMedia('youtube');
+  }
+};
+
+//endregion
+
+//region SVG Style
+
+const currentPrefersDarkMode = usePreferredDark();
+const useIconColor = computed(() => {
+  return currentPrefersDarkMode.value
+      ? "#f8f8f8"
+      : "#000000";
+});
+
+//endregion
+
+onMounted(() => {
+
+  emitter.on("toChangeLocale", init);
+
+  init();
+});
+
+onUnmounted(() => {
+  emitter.off("toChangeLocale");
+});
+
+</script>
+
+<template>
+
+  <div v-if="uiStore.currentMedia === 'none'" class="flex justify-center mb-4">
+    暂无资源 <br/>No resources
+  </div>
+  <div v-else class="flex justify-center mb-4">
+    <div class="group-btn cursor-pointer">
+
+      <button v-if="hasBvId"
+              @click="changeMedia('bilibili',true)"
+              class="group-btn-text"
+              :class="{'group-btn-current': uiStore.currentMedia === 'bilibili'}">
+        <svg t="1701695933999" class="icon" viewBox="0 0 1024 1024" version="1.1"
+             xmlns="http://www.w3.org/2000/svg" p-id="1488" data-darkreader-inline-fill=""
+             width="16" height="16">
+          <path
+              d="M977.2 208.2c33.4 36.2 48.8 79.4 46.6 131.4v404.8c-0.8 52.8-18.4 96.2-53 130.2-34.4 34-78.2 51.8-131 53.4H184.04c-52.9-1.6-96.42-19.6-130.56-54.4C19.364 838.8 1.534 793 0 736.4V339.6c1.534-52 19.364-95.2 53.48-131.4C87.62 175.5 131.14 157.54 184.04 156h58.76L192.1 104.38c-11.5-11.46-17.26-26-17.26-43.58 0-17.6 5.76-32.12 17.26-43.594C203.6 5.736 218.2 0 235.8 0s32.2 5.736 43.8 17.206L426.2 156h176l149-138.794C763.4 5.736 778.4 0 796 0c17.6 0 32.2 5.736 43.8 17.206 11.4 11.474 17.2 25.994 17.2 43.594 0 17.58-5.8 32.12-17.2 43.58L789.2 156h58.6c52.8 1.54 96 19.5 129.4 52.2z m-77.6 139.4c-0.8-19.2-7.4-34.8-21.4-47-10.4-12.2-28-18.8-45.4-19.6H192.1c-19.18 0.8-34.9 7.4-47.16 19.6-12.28 12.2-18.8 27.8-19.56 47v388.8c0 18.4 6.52 34 19.56 47s28.76 19.6 47.16 19.6H832.8c18.4 0 34-6.6 46.6-19.6 12.6-13 19.4-28.6 20.2-47V347.6z m-528.6 85.4c12.6 12.6 19.4 28.2 20.2 46.4V546c-0.8 18.4-7.4 33.8-19.6 46.4-12.4 12.6-28 19-47.2 19-19.2 0-35-6.4-47.2-19-12.2-12.6-18.8-28-19.6-46.4v-66.6c0.8-18.2 7.6-33.8 20.2-46.4 12.6-12.6 26.4-19.2 46.6-20 18.4 0.8 34 7.4 46.6 20z m383 0c12.6 12.6 19.4 28.2 20.2 46.4V546c-0.8 18.4-7.4 33.8-19.6 46.4-12.2 12.6-28 19-47.2 19-19.2 0-34.8-6.4-47.2-19-14-12.6-18.8-28-19.4-46.4v-66.6c0.6-18.2 7.4-33.8 20-46.4 12.6-12.6 28.2-19.2 46.6-20 18.4 0.8 34 7.4 46.6 20z"
+              p-id="1489"
+              fill="#d4237a" data-darkreader-inline-fill=""
+              style="--darkreader-inline-fill: #aa1c62;">
+          </path>
+        </svg>
+      </button>
+
+      <button v-if="hasYid"
+              @click="changeMedia('youtube',true)"
+              class="group-btn-text"
+              :class="{'group-btn-current': uiStore.currentMedia === 'youtube'}">
+        <youtobe class="sort-btn-icon" size="16" :fill="useIconColor"/>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Start Bilibili Resource -->
+  <div class="w-full my-6 rounded-lg overflow-hidden shadow" v-if="hasBvId" v-show="uiStore.currentMedia === 'bilibili'">
+    <bilibili-embed :bvid="useBvId" width=""/>
+  </div>
+  <!-- End Bilibili Resource -->
+
+  <!-- Start Youtube Resource -->
+  <div class="w-full my-6 rounded-lg overflow-hidden shadow" v-if="hasYid" v-show="uiStore.currentMedia === 'youtube'">
+    <youtube-embed :yid="useYid" width=""/>
+  </div>
+  <!-- End Youtube Resource -->
+
+</template>
+
+<style scoped lang="css">
+.group-btn {
+  @apply inline-block mt-3 px-3;
+  @apply bg-white dark:bg-black/50 backdrop-blur-3xl rounded-full;
+  @apply font-light;
+}
+
+.group-btn-text {
+  @apply inline-block p-2 align-middle rounded-full;
+  @apply text-sm;
+}
+
+.group-btn-current {
+  @apply bg-purple-500/10 dark:bg-purple-200/30;
+
+}
+</style>

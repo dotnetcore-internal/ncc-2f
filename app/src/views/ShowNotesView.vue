@@ -14,8 +14,7 @@ import Anchor from "@/components/basic/AnchorElement.vue";
 import TitleBlock from "@/components/blocks/TitleBlock.vue";
 import ArticleAuthors from "@/components/articles/ArticleAuthors.vue";
 import ArticleCardsAuthors from "@/components/articles/ArticleCardsAuthors.vue";
-import Bilibili from "@/components/media/BilibiliEmbedBlock.vue";
-import Youtube from "@/components/media/YoutubeEmbedBlock.vue";
+import MediaShell from "@/components/media/MediaShell.vue";
 
 import {ArrowLeft} from "@icon-park/vue-next";
 
@@ -49,27 +48,13 @@ const loadEpisodeMetadataAsync = async (locale?: string) => {
     articleMetadata.img = data.img;
     articleMetadata.url = data.url;
     articleMetadata.bvid = data.bvid;
-    articleMetadata.yid=data.yid;
+    articleMetadata.yid = data.yid;
     setTitle(articleMetadata.title, "direct");
     articleMetadataLoaded.value = true;
   });
 };
 
-const hasBilibiliBvId = computed(()=>{
-  return !!articleMetadata.bvid && articleMetadata.bvid.length > 0;
-});
-
-const useBilibiliBvId = computed(() => {
-  return articleMetadata.bvid;
-});
-
-const hasYoutubeId = computed(()=>{
-  return !!articleMetadata.yid && articleMetadata.yid.length > 0;
-});
-
-const useYoutubeId = computed(() => {
-  return articleMetadata.yid;
-});
+//region Article title, date and author
 
 const useArticleTitle = computed(() => {
   return articleMetadata.title;
@@ -86,6 +71,8 @@ const useAuthor = computed(() => {
 const displayDate = (date: Date, format: string) => {
   return useDateFormat(date, format, {locales: uiStore}).value;
 };
+
+//endregion
 
 const currentPrefersDarkMode = usePreferredDark();
 const useIconColor = computed(() => {
@@ -108,7 +95,6 @@ onMounted(async () => {
   });
 
   await loadEpisodeMetadataAsync();
-
 });
 
 onUnmounted(() => {
@@ -118,19 +104,9 @@ onUnmounted(() => {
 
 <template>
 
-  <body-block>
+  <body-block v-if="articleMetadataLoaded">
 
-    <!-- Start Bilibili Resource -->
-    <div class="w-full my-6 rounded-lg overflow-hidden shadow" v-if="articleMetadataLoaded && hasBilibiliBvId">
-      <bilibili :bvid="useBilibiliBvId" />
-    </div>
-    <!-- End Bilibili Resource -->
-
-    <!-- Start Youtube Resource -->
-    <div class="w-full my-6 rounded-lg overflow-hidden shadow" v-if="articleMetadataLoaded && hasYoutubeId">
-      <youtube :yid="useYoutubeId" />
-    </div>
-    <!-- End Youtube Resource -->
+    <media-shell :metadata="articleMetadata"/>
 
   </body-block>
 

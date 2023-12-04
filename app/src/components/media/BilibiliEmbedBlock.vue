@@ -98,7 +98,22 @@ const useDanmaku = computed(() => {
 
 const useIframeSrc = computed(() => {
   const base = '//player.bilibili.com/player.html'
-  return `${base}?aid=${aid.value}&bvid=${props.bvid}&page=${props.page}&cid=${useCid.value}&high_quality=${useHighQuality.value}&as_wide=${useWide.value}&danmaku=${useDanmaku.value}&t=${useTimeStamp.value}&autoplay=${useAutoPlay.value}`
+  return `${base}?aid=${aid.value}&bvid=${props.bvid}&page=${props.page}&cid=${useCid.value}&high_quality=${useHighQuality.value}&as_wide=${useWide.value}&danmaku=${useDanmaku.value}&autoplay=${useAutoPlay.value}`
+});
+
+const useIframeSrcWithTs = computed(() => {
+  return `${useIframeSrc.value}&t=${useTimeStamp.value}`
+});
+
+const useSrcWithTs = ref(true);
+const usePausedStatus = ref(false);
+
+const useIframeUrl = computed(() => {
+  return usePausedStatus.value
+      ? ''
+      : useSrcWithTs.value
+          ? useIframeSrcWithTs.value
+          : useIframeSrc.value;
 });
 
 onMounted(async () => {
@@ -117,12 +132,28 @@ onMounted(async () => {
     if (event.to === 'bilibili') {
       timestamp.value = event.timestamp;
       currentAutoPlay.value = true;
+      // 使用有时间戳版本
+      useSrcWithTs.value = true;
+    }
+  });
+
+  emitter.on('pauseBiliPlay', (e) => {
+    const event = e as { status: boolean };
+    if (event.status) {
+      //切换，手工暂停
+      usePausedStatus.value = true;
+    } else {
+      // 切换，开始播放
+      usePausedStatus.value = false;
+      // 使用无时间戳版本
+      useSrcWithTs.value = false;
     }
   });
 });
 
 onUnmounted(() => {
   emitter.off('updateTimeStamp');
+  emitter.off('pauseBiliPlay')
 });
 
 </script>
@@ -130,12 +161,13 @@ onUnmounted(() => {
 <template>
   <div class="w-full" ref="mediaRef">
     <iframe
+        id="bilibili-iframe"
         loading="lazy"
         :width="width"
         :height="useHeight"
-        :src="useIframeSrc"
+        :src="useIframeUrl"
         data-rocket-lazyload="fitvidscompatible"
-        :data-lazy-src="useIframeSrc"
+        :data-lazy-src="useIframeUrl"
         :allowFullScreen="true"
         :class="{ iframeClass }"
         scrolling="no"

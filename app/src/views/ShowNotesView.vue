@@ -5,7 +5,6 @@ import {useRoute, useRouter} from "vue-router";
 import {useEmitter} from "@/hooks/useEmitter";
 import {useUiStore} from "@/stores/uiStore";
 import {setTitle} from "@/hooks/usePageToolkits";
-import {jumpTimeStamp} from "@/hooks/useMedia";
 import {queryEpisodeMetadata} from "@/apis/QueryEpicodeMetadataApi";
 import type {EpisodeProfileModel} from "@/apis/ContentModels";
 
@@ -13,12 +12,13 @@ import Markdown from "@/components/markdown/MarkdownWorker.vue";
 import BodyBlock from "@/components/blocks/BodyBlock.vue";
 import Anchor from "@/components/basic/AnchorElement.vue";
 import TitleBlock from "@/components/blocks/TitleBlock.vue";
+import WaveLoading from "@/components/basic/WaveLoading.vue";
 import ArticleAuthors from "@/components/articles/ArticleAuthors.vue";
 import ArticleCardsAuthors from "@/components/articles/ArticleCardsAuthors.vue";
 import MediaShell from "@/components/media/MediaShell.vue";
+import MediaTimeStamp from "@/components/media/MediaTimeStampBlock.vue";
 
 import {ArrowLeft} from "@icon-park/vue-next";
-import WaveLoading from "@/components/basic/WaveLoading.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -60,24 +60,6 @@ const loadEpisodeMetadataAsync = async (locale?: string) => {
     articleMetadataLoaded.value = true;
   });
 };
-
-//region Media
-
-const hasMediaTimeStamp = computed(() => {
-  return articleMetadataLoaded.value && !!articleMetadata.timestamp && articleMetadata.timestamp.length > 0;
-});
-
-const useMediaTimeStamp = computed(()=>{
-  return articleMetadata.timestamp;
-});
-
-const changeMediaTimeStamp = (second: string | number) => {
-  if (uiStore.currentMedia !== 'none') {
-    jumpTimeStamp(second, uiStore.currentMedia);
-  }
-}
-
-//endregion
 
 //region Article title, date and author
 
@@ -173,13 +155,8 @@ onUnmounted(() => {
       <!-- End Preface -->
 
       <!-- Start TimeStamp -->
-      <div class="p-5" v-if="hasMediaTimeStamp">
-
-        <div v-for="(item, i) in useMediaTimeStamp" :key="i" class="flex gap-4">
-          <a class="block flex-none w-12 text-right text-sky-600 hover:text-sky-900 font-mono underline hover:underline underline-offset-2" @click.prevent="changeMediaTimeStamp(item.stamp)">{{ item.displayTime }}</a>
-          <span class="block flex-1"> {{ item.content }} </span>
-        </div>
-
+      <div v-if="articleMetadataLoaded">
+        <media-time-stamp :metadata="articleMetadata"/>
       </div>
       <!-- End TimeStamp -->
 

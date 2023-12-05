@@ -15,11 +15,18 @@ export interface hasDescription {
 }
 
 export interface EpisodeIndexModel extends Article, hasAuthor, hasDescription {
-    bvid?: string;
-    yid?: string;
 }
 
-export interface StoryIndexModel extends Article, hasAuthor, hasDescription {
+export interface EpisodeProfileModel extends EpisodeIndexModel {
+    bvid?: string;
+    yid?: string;
+    timestamp?: TimeStampModel[];
+}
+
+export interface TimeStampModel {
+    stamp: number;
+    displayTime: string;
+    content: string;
 }
 
 export interface AuthorModel {

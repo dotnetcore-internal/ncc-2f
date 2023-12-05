@@ -9,6 +9,7 @@ const emitter = useEmitter();
 
 const props = withDefaults(defineProps<{
   yid: string;
+  autoplay?: boolean;
   aspectWidth?: number;
   aspectHeight?: number;
   width?: string | number;
@@ -16,6 +17,7 @@ const props = withDefaults(defineProps<{
   iframeClass?: string;
   timestamp?: number;
 }>(), {
+  autoplay: false,
   width: 480,
   iframeClass: '',
   timestamp: 0,
@@ -36,9 +38,10 @@ const timestamp = ref<number>(0);
 const currentAspectWidth = ref(0);
 const currentAspectHeight = ref(0);
 const currentHeight = ref<number | string | undefined>();
+const currentAutoPlay = ref(false);
 
 const useTimeStamp = computed(() => {
-  return `?start=${timestamp.value}`;
+  return `&start=${timestamp.value}`;
 });
 
 const calcHeight = (width: number) => {
@@ -61,8 +64,12 @@ const useHeight = computed(() => {
   return 360;
 });
 
+const useAutoPlay = computed(() => {
+  return currentAutoPlay.value ? 1 : 0;
+});
+
 const useIframeSrc = computed(() => {
-  return `https://www.youtube.com/embed/${props.yid}`
+  return `https://www.youtube.com/embed/${props.yid}?autoplay=${useAutoPlay.value}`
 });
 
 const useIframeSrcWithTs = computed(() => {
@@ -85,33 +92,38 @@ onMounted(async () => {
   currentAspectHeight.value = props.aspectHeight ?? uiStore.isMobileMode ? 9 : 3;
   currentAspectWidth.value = props.aspectWidth ?? uiStore.isMobileMode ? 16 : 4;
   currentHeight.value = props.height;
+  currentAutoPlay.value = props.autoplay;
 
   emitter.on('updateTimeStamp', (e) => {
     const event = e as { timestamp: number, to: 'bilibili' | 'youtube' };
     if (event.to === 'youtube') {
       timestamp.value = event.timestamp;
+      currentAutoPlay.value = true;
       // 使用有时间戳版本
       useSrcWithTs.value = true;
     }
   });
 
-  emitter.on('pauseYoutubePlay', (e) => {
-    const event = e as { status: boolean };
-    if (event.status) {
-      //切换，手工暂停
-      usePausedStatus.value = true;
-    } else {
-      // 切换，开始播放
-      usePausedStatus.value = false;
-      // 使用无时间戳版本
-      useSrcWithTs.value = false;
+  emitter.on('pauseEmbedPlayer', (e) => {
+    const event = e as { status: boolean, to: 'bilibili' | 'youtube' };
+    if (event.to === 'youtube') {
+      if (event.status) {
+        //切换，手工暂停
+        usePausedStatus.value = true;
+      } else {
+        // 切换，开始播放
+        usePausedStatus.value = false;
+        // 使用无时间戳版本
+        useSrcWithTs.value = false;
+      }
     }
+
   });
 });
 
 onUnmounted(() => {
   emitter.off('updateTimeStamp');
-  emitter.off('pauseYoutubePlay')
+  emitter.off('pauseEmbedPlayer')
 });
 
 </script>

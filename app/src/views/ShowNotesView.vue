@@ -5,8 +5,9 @@ import {useRoute, useRouter} from "vue-router";
 import {useEmitter} from "@/hooks/useEmitter";
 import {useUiStore} from "@/stores/uiStore";
 import {setTitle} from "@/hooks/usePageToolkits";
+import {jumpTimeStamp} from "@/hooks/useMedia";
 import {queryEpisodeMetadata} from "@/apis/QueryEpicodeMetadataApi";
-import type {EpisodeIndexModel} from "@/apis/ContentModels";
+import type {EpisodeProfileModel} from "@/apis/ContentModels";
 
 import Markdown from "@/components/markdown/MarkdownWorker.vue";
 import BodyBlock from "@/components/blocks/BodyBlock.vue";
@@ -17,6 +18,7 @@ import ArticleCardsAuthors from "@/components/articles/ArticleCardsAuthors.vue";
 import MediaShell from "@/components/media/MediaShell.vue";
 
 import {ArrowLeft} from "@icon-park/vue-next";
+import WaveLoading from "@/components/basic/WaveLoading.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -30,10 +32,14 @@ const articleId = computed(() => {
   return params.join("/");
 });
 
-const articleMetadata = reactive<EpisodeIndexModel>({} as EpisodeIndexModel);
+const articleMetadata = reactive<EpisodeProfileModel>({} as EpisodeProfileModel);
 const articleMetadataLoaded = ref(false);
 
-const articleSource = computed(() => {
+const prefaceSource = computed(() => {
+  return `show-notes/${articleId.value}/preface`;
+});
+
+const contentSource = computed(() => {
   return `show-notes/${articleId.value}/content`;
 });
 
@@ -49,10 +55,29 @@ const loadEpisodeMetadataAsync = async (locale?: string) => {
     articleMetadata.url = data.url;
     articleMetadata.bvid = data.bvid;
     articleMetadata.yid = data.yid;
+    articleMetadata.timestamp = data.timestamp;
     setTitle(articleMetadata.title, "direct");
     articleMetadataLoaded.value = true;
   });
 };
+
+//region Media
+
+const hasMediaTimeStamp = computed(() => {
+  return articleMetadataLoaded.value && !!articleMetadata.timestamp && articleMetadata.timestamp.length > 0;
+});
+
+const useMediaTimeStamp = computed(()=>{
+  return articleMetadata.timestamp;
+});
+
+const changeMediaTimeStamp = (second: string | number) => {
+  if (uiStore.currentMedia !== 'none') {
+    jumpTimeStamp(second, uiStore.currentMedia);
+  }
+}
+
+//endregion
 
 //region Article title, date and author
 
@@ -74,12 +99,16 @@ const displayDate = (date: Date, format: string) => {
 
 //endregion
 
+//region SVG Style
+
 const currentPrefersDarkMode = usePreferredDark();
 const useIconColor = computed(() => {
   return currentPrefersDarkMode.value
       ? "#f8f8f8"
       : "#000000";
 });
+
+//endregion
 
 onMounted(async () => {
 
@@ -88,7 +117,7 @@ onMounted(async () => {
     currentLocale.value = event.locale;
     try {
       await loadEpisodeMetadataAsync(event.locale);
-      emitter.emit("toRerenderMarkdown", {source: articleSource.value, locale: event.locale});
+      emitter.emit("toRerenderMarkdown", {source: contentSource.value, locale: event.locale});
     } catch {
       await router.push({path: `/404`});
     }
@@ -109,6 +138,7 @@ onUnmounted(() => {
     <media-shell :metadata="articleMetadata"/>
 
   </body-block>
+  <wave-loading v-else/>
 
   <body-block>
 
@@ -134,11 +164,32 @@ onUnmounted(() => {
 
       </div>
 
-      <markdown :source="articleSource"
+      <!-- Start Preface -->
+      <markdown :source="prefaceSource"
                 :i18n="true"
                 fallback-locale="en"
                 :final-fallback-fn="()=>router.push({ path: `/404` })"
       />
+      <!-- End Preface -->
+
+      <!-- Start TimeStamp -->
+      <div class="p-5" v-if="hasMediaTimeStamp">
+
+        <div v-for="(item, i) in useMediaTimeStamp" :key="i" class="flex gap-4">
+          <a class="block flex-none w-12 text-right text-sky-600 hover:text-sky-900 font-mono underline hover:underline underline-offset-2" @click.prevent="changeMediaTimeStamp(item.stamp)">{{ item.displayTime }}</a>
+          <span class="block flex-1"> {{ item.content }} </span>
+        </div>
+
+      </div>
+      <!-- End TimeStamp -->
+
+      <!-- Start Content -->
+      <markdown :source="contentSource"
+                :i18n="true"
+                fallback-locale="en"
+                :final-fallback-fn="()=>router.push({ path: `/404` })"
+      />
+      <!-- End Content -->
 
       <div class="makers">
         <p class="font-bold"> {{ $t('2f.producers-of-this-episode') }} </p>

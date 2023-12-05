@@ -2,8 +2,7 @@
 import {computed, onMounted, onUnmounted, ref} from "vue";
 import {useEmitter} from "@/hooks/useEmitter";
 import {useUiStore} from "@/stores/uiStore";
-import type {EpisodeIndexModel} from "@/apis/ContentModels";
-import {jumpTimeStamp} from "@/hooks/useMedia";
+import type {EpisodeProfileModel} from "@/apis/ContentModels";
 
 import YoutubeEmbed from "@/components/media/YoutubeEmbedBlock.vue";
 import BilibiliEmbed from "@/components/media/BilibiliEmbedBlock.vue";
@@ -15,7 +14,7 @@ const emitter = useEmitter();
 const uiStore = useUiStore();
 
 const props = withDefaults(defineProps<{
-  metadata: EpisodeIndexModel
+  metadata: EpisodeProfileModel
 }>(), {});
 
 //region Current
@@ -54,18 +53,11 @@ const changeMedia = (media: 'bilibili' | 'youtube', m: boolean = false) => {
   uiStore.setCurrentMedia(media);
   changedMediaManually.value = m;
   if (media === 'bilibili') {
-    emitter.emit('pauseBiliPlay', {status: false});
-    emitter.emit('pauseYoutubePlay', {status: true});
+    emitter.emit('pauseEmbedPlayer', {status: false, to: 'bilibili'});
+    emitter.emit('pauseEmbedPlayer', {status: true, to: 'youtube'});
   } else {
-    emitter.emit('pauseBiliPlay', {status: true});
-    emitter.emit('pauseYoutubePlay', {status: false});
-  }
-}
-
-const changeMediaTimestamp = (second: string | number) => {
-  //跨组件切换时间戳，此处 currentMedia 需要放进 Pinia
-  if (uiStore.currentMedia !== 'none') {
-    jumpTimeStamp(second, uiStore.currentMedia);
+    emitter.emit('pauseEmbedPlayer', {status: true, to: 'bilibili'});
+    emitter.emit('pauseEmbedPlayer', {status: false, to: 'youtube'});
   }
 }
 

@@ -137,23 +137,26 @@ onMounted(async () => {
     }
   });
 
-  emitter.on('pauseBiliPlay', (e) => {
-    const event = e as { status: boolean };
-    if (event.status) {
-      //切换，手工暂停
-      usePausedStatus.value = true;
-    } else {
-      // 切换，开始播放
-      usePausedStatus.value = false;
-      // 使用无时间戳版本
-      useSrcWithTs.value = false;
+  emitter.on('pauseEmbedPlayer', (e) => {
+    const event = e as { status: boolean, to: 'bilibili' | 'youtube' };
+    if (event.to === 'bilibili') {
+      if (event.status) {
+        //切换，手工暂停
+        usePausedStatus.value = true;
+      } else {
+        // 切换，开始播放
+        usePausedStatus.value = false;
+        // 使用无时间戳版本
+        useSrcWithTs.value = false;
+      }
     }
+
   });
 });
 
 onUnmounted(() => {
   emitter.off('updateTimeStamp');
-  emitter.off('pauseBiliPlay')
+  emitter.off('pauseEmbedPlayer')
 });
 
 </script>

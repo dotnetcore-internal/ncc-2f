@@ -25,5 +25,22 @@
   ],
   "img": "ncc-2f.png",
   "bvid": "BV1JN411L7DY",
-  "yid": "J7ck88hc24A"
+  "yid": "J7ck88hc24A",
+  "timestamp": [
+    {
+      "stamp": 2,
+      "displayTime": "00:02",
+      "content": "开始"
+    },
+    {
+      "stamp": 16,
+      "displayTime": "00:16",
+      "content": "摇摆摇摆，随风摇摆"
+    },
+    {
+      "stamp": 72,
+      "displayTime": "01:12",
+      "content": "混蛋混蛋，一直红心出墙来"
+    }
+  ]
 }

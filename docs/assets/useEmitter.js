@@ -1,0 +1,1 @@
+import{Z as i,j as t,_ as c}from"./vendor.js";const d=i("ui",()=>{const s=t(!1),r=e=>s.value=e,o=t("en"),a=e=>{o.value=e},n=t("none");return{isMobileMode:s,setMobileMode:r,locale:o,setLocale:a,currentMedia:n,setCurrentMedia:e=>n.value=e}}),u=c(),m=()=>u;export{m as a,d as u};

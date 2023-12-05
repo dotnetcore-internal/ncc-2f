@@ -1,0 +1,40 @@
+{
+  "_page": {
+    "current": 1,
+    "total": 1,
+    "name": "2023",
+    "nameSeries": [
+      "2023"
+    ]
+  },
+  "list": [
+    {
+      "id": "welcome-to-ncc-2f",
+      "title": "Episode 1: Welcome to NCC Second Floor",
+      "description": "In this episode, we will introduce the past and present of the NCC community and look forward to the future. At the same time, we will also share with you some paths to learn .NET.",
+      "date": "2023-12-09",
+      "author": [
+        {
+          "id": "alexinea",
+          "name": "Alex LEWIS",
+          "url": "https://github.com/alexinea",
+          "avatar": "/images/people/alexinea.png",
+          "groups": [
+            "host",
+            "speaker"
+          ]
+        },
+        {
+          "id": "lhy",
+          "name": "Haoyang LIU",
+          "url": "https://github.com/liuhaoyang",
+          "avatar": "/images/people/lhy.jpg",
+          "groups": [
+            "speaker"
+          ]
+        }
+      ],
+      "img": "ncc-2f.png"
+    }
+  ]
+}

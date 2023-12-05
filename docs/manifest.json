@@ -1,4 +1,99 @@
 {
+  "BodyBlock.css": {
+    "file": "assets/BodyBlock.css",
+    "src": "BodyBlock.css"
+  },
+  "TitleBlock.css": {
+    "file": "assets/TitleBlock.css",
+    "src": "TitleBlock.css"
+  },
+  "WaveLoading.css": {
+    "file": "assets/WaveLoading.css",
+    "src": "WaveLoading.css"
+  },
+  "_AnchorElement.vue_vue_type_script_setup_true_lang.js": {
+    "file": "assets/AnchorElement.vue_vue_type_script_setup_true_lang.js",
+    "imports": [
+      "_vendor.js",
+      "_usePageToolkits.js"
+    ]
+  },
+  "_ArticleCardsAuthors.vue_vue_type_script_setup_true_lang.js": {
+    "file": "assets/ArticleCardsAuthors.vue_vue_type_script_setup_true_lang.js",
+    "imports": [
+      "_vendor.js"
+    ]
+  },
+  "_BodyBlock.js": {
+    "css": [
+      "assets/BodyBlock.css"
+    ],
+    "file": "assets/BodyBlock.js",
+    "imports": [
+      "__plugin-vue_export-helper.js",
+      "_vendor.js"
+    ]
+  },
+  "_MarkdownWorker.vue_vue_type_script_setup_true_lang.js": {
+    "file": "assets/MarkdownWorker.vue_vue_type_script_setup_true_lang.js",
+    "imports": [
+      "_vendor.js",
+      "_useEmitter.js",
+      "_WaveLoading.vue_vue_type_style_index_0_scoped_df7ac771_lang.js",
+      "__plugin-vue_export-helper.js"
+    ]
+  },
+  "_PlaceholderBlock.vue_vue_type_script_setup_true_lang.js": {
+    "file": "assets/PlaceholderBlock.vue_vue_type_script_setup_true_lang.js",
+    "imports": [
+      "_vendor.js"
+    ]
+  },
+  "_TitleBlock.js": {
+    "css": [
+      "assets/TitleBlock.css"
+    ],
+    "file": "assets/TitleBlock.js",
+    "imports": [
+      "_vendor.js",
+      "_PlaceholderBlock.vue_vue_type_script_setup_true_lang.js",
+      "__plugin-vue_export-helper.js"
+    ]
+  },
+  "_WaveLoading.vue_vue_type_style_index_0_scoped_df7ac771_lang.js": {
+    "css": [
+      "assets/WaveLoading.css"
+    ],
+    "file": "assets/WaveLoading.vue_vue_type_style_index_0_scoped_df7ac771_lang.js",
+    "imports": [
+      "_vendor.js"
+    ]
+  },
+  "__plugin-vue_export-helper.js": {
+    "file": "assets/_plugin-vue_export-helper.js"
+  },
+  "_useEmitter.js": {
+    "file": "assets/useEmitter.js",
+    "imports": [
+      "_vendor.js"
+    ]
+  },
+  "_usePageToolkits.js": {
+    "dynamicImports": [
+      "src/views/HomeView.vue",
+      "src/views/AboutView.vue",
+      "src/views/AllSpeakers.vue",
+      "src/views/HowTo.vue",
+      "src/views/HomeView.vue",
+      "src/views/HomeView.vue",
+      "src/views/ShowNotesView.vue",
+      "src/views/Page404.vue"
+    ],
+    "file": "assets/usePageToolkits.js",
+    "imports": [
+      "_vendor.js"
+    ]
+  },
   "_vendor.js": {
     "file": "assets/vendor.js"
   },
@@ -8,27 +103,104 @@
   },
   "index.html": {
     "css": [
-      "assets/index.css"
-    ],
-    "dynamicImports": [
-      "src/views/HomeView.vue",
-      "src/views/Page404.vue"
+      "assets/index.css",
+      "assets/TitleBlock.css"
     ],
     "file": "assets/index.js",
     "imports": [
-      "_vendor.js"
+      "_vendor.js",
+      "_usePageToolkits.js",
+      "_useEmitter.js",
+      "_AnchorElement.vue_vue_type_script_setup_true_lang.js",
+      "__plugin-vue_export-helper.js",
+      "_TitleBlock.js",
+      "_PlaceholderBlock.vue_vue_type_script_setup_true_lang.js"
     ],
     "isEntry": true,
     "src": "index.html"
   },
+  "src/apis/guests.json": {
+    "file": "assets/guests.js",
+    "isDynamicEntry": true,
+    "src": "src/apis/guests.json"
+  },
+  "src/views/AboutView.css": {
+    "file": "assets/AboutView.css",
+    "src": "src/views/AboutView.css"
+  },
+  "src/views/AboutView.vue": {
+    "css": [
+      "assets/AboutView.css",
+      "assets/TitleBlock.css"
+    ],
+    "file": "assets/AboutView.js",
+    "imports": [
+      "_MarkdownWorker.vue_vue_type_script_setup_true_lang.js",
+      "_PlaceholderBlock.vue_vue_type_script_setup_true_lang.js",
+      "_TitleBlock.js",
+      "_AnchorElement.vue_vue_type_script_setup_true_lang.js",
+      "_vendor.js",
+      "__plugin-vue_export-helper.js",
+      "_useEmitter.js",
+      "_WaveLoading.vue_vue_type_style_index_0_scoped_df7ac771_lang.js",
+      "_usePageToolkits.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "src/views/AboutView.vue"
+  },
+  "src/views/AllSpeakers.vue": {
+    "css": [
+      "assets/TitleBlock.css"
+    ],
+    "dynamicImports": [
+      "src/apis/guests.json"
+    ],
+    "file": "assets/AllSpeakers.js",
+    "imports": [
+      "_usePageToolkits.js",
+      "_BodyBlock.js",
+      "_PlaceholderBlock.vue_vue_type_script_setup_true_lang.js",
+      "_useEmitter.js",
+      "_WaveLoading.vue_vue_type_style_index_0_scoped_df7ac771_lang.js",
+      "_vendor.js",
+      "__plugin-vue_export-helper.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "src/views/AllSpeakers.vue"
+  },
+  "src/views/HomeView.css": {
+    "file": "assets/HomeView.css",
+    "src": "src/views/HomeView.css"
+  },
   "src/views/HomeView.vue": {
+    "css": [
+      "assets/HomeView.css"
+    ],
     "file": "assets/HomeView.js",
     "imports": [
-      "index.html",
-      "_vendor.js"
+      "_vendor.js",
+      "_useEmitter.js",
+      "_usePageToolkits.js",
+      "_ArticleCardsAuthors.vue_vue_type_script_setup_true_lang.js",
+      "_BodyBlock.js",
+      "_AnchorElement.vue_vue_type_script_setup_true_lang.js",
+      "__plugin-vue_export-helper.js"
     ],
     "isDynamicEntry": true,
     "src": "src/views/HomeView.vue"
+  },
+  "src/views/HowTo.vue": {
+    "file": "assets/HowTo.js",
+    "imports": [
+      "_MarkdownWorker.vue_vue_type_script_setup_true_lang.js",
+      "_PlaceholderBlock.vue_vue_type_script_setup_true_lang.js",
+      "_vendor.js",
+      "_useEmitter.js",
+      "_WaveLoading.vue_vue_type_style_index_0_scoped_df7ac771_lang.js",
+      "__plugin-vue_export-helper.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "src/views/HowTo.vue"
   },
   "src/views/Page404.css": {
     "file": "assets/Page404.css",
@@ -40,10 +212,39 @@
     ],
     "file": "assets/Page404.js",
     "imports": [
-      "index.html",
-      "_vendor.js"
+      "_usePageToolkits.js",
+      "_BodyBlock.js",
+      "_AnchorElement.vue_vue_type_script_setup_true_lang.js",
+      "_vendor.js",
+      "__plugin-vue_export-helper.js"
     ],
     "isDynamicEntry": true,
     "src": "src/views/Page404.vue"
+  },
+  "src/views/ShowNotesView.css": {
+    "file": "assets/ShowNotesView.css",
+    "src": "src/views/ShowNotesView.css"
+  },
+  "src/views/ShowNotesView.vue": {
+    "css": [
+      "assets/ShowNotesView.css",
+      "assets/TitleBlock.css"
+    ],
+    "file": "assets/ShowNotesView.js",
+    "imports": [
+      "_vendor.js",
+      "_useEmitter.js",
+      "_usePageToolkits.js",
+      "_ArticleCardsAuthors.vue_vue_type_script_setup_true_lang.js",
+      "_MarkdownWorker.vue_vue_type_script_setup_true_lang.js",
+      "_BodyBlock.js",
+      "_AnchorElement.vue_vue_type_script_setup_true_lang.js",
+      "_TitleBlock.js",
+      "__plugin-vue_export-helper.js",
+      "_WaveLoading.vue_vue_type_style_index_0_scoped_df7ac771_lang.js",
+      "_PlaceholderBlock.vue_vue_type_script_setup_true_lang.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "src/views/ShowNotesView.vue"
   }
 }

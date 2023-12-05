@@ -1,0 +1,1 @@
+import{_ as o}from"./_plugin-vue_export-helper.js";import{o as t,a as c,r as s}from"./vendor.js";const _={},d={class:"responsive-width body-block text-black dark:text-white"};function r(e,n){return t(),c("div",d,[s(e.$slots,"default",{},void 0,!0)])}const i=o(_,[["render",r],["__scopeId","data-v-7f9dbb1c"]]);export{i as B};
